@@ -20,14 +20,14 @@ import { Component, signal } from '@angular/core';
 })
 export class Footer {
 
-  title = signal('PPW ANGULAR 21');
+  title = signal('PPW-ANGULAR-21');
 
-  message = signal('Autor: Josué Abad');
+  message = signal('Autor: Sebastián Alvarado');
 
   today = signal(new Date());
 
-  price = signal(150);
+  price = signal(180);
 
-  percent = signal(0.75);
+  percent = signal(0.85);
 
 }
