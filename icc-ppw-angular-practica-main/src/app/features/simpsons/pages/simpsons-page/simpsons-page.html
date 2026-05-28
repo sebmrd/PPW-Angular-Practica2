@@ -1,0 +1,146 @@
+<section class="bg-base-200 min-h-screen py-10 px-6">
+
+  <div class="max-w-7xl mx-auto">
+
+    <div class="mb-10">
+
+      <h1 class="text-5xl font-black tracking-tight mb-2">
+        The Simpsons
+      </h1>
+
+      <p class="text-lg text-base-content/60">
+        Personajes de la serie — powered by The Simpsons API
+      </p>
+
+    </div>
+
+    @if (simpsonsResource.isLoading()) {
+
+    <div class="flex justify-center items-center h-64">
+      <span class="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+
+    }
+
+    @if (simpsonsResource.error()) {
+
+    <div class="alert alert-error max-w-lg mx-auto">
+      <span>Error al cargar personajes.</span>
+    </div>
+
+    }
+
+    @if (simpsonsResource.hasValue()) {
+
+    <div class="flex items-center justify-between mb-8">
+
+      <span class="text-sm text-base-content/60">
+        Página {{ paginationService.currentPage() }}
+        de {{ simpsonsResource.value()!.pages }}
+      </span>
+
+      <div class="join">
+
+        <a
+          class="join-item btn btn-sm"
+          [class.btn-disabled]="paginationService.currentPage() <= 1"
+          [routerLink]="[]"
+          [queryParams]="{
+            page: paginationService.currentPage() - 1
+          }"
+        >
+          «
+        </a>
+
+        <button class="join-item btn btn-sm btn-active">
+          {{ paginationService.currentPage() }}
+        </button>
+
+        <a
+          class="join-item btn btn-sm"
+          [class.btn-disabled]="paginationService.currentPage() >= simpsonsResource.value()!.pages"
+          [routerLink]="[]"
+          [queryParams]="{
+            page: paginationService.currentPage() + 1
+          }"
+        >
+          »
+        </a>
+
+      </div>
+
+    </div>
+
+    @if (simpsonsResource.value()!.results.length === 0) {
+
+    <div class="text-center py-20">
+
+      <p class="text-3xl font-bold mb-2">
+        Sin resultados
+      </p>
+
+      <p class="text-base-content/50">
+        No se encontraron personajes.
+      </p>
+
+    </div>
+
+    }
+
+    @if (simpsonsResource.value()!.results.length > 0) {
+
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+    >
+
+      @for (char of simpsonsResource.value()!.results; track char.id) {
+
+      <a
+        [routerLink]="['/simpsons', char.id]"
+        class="card bg-base-100 border border-base-300 shadow hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+      >
+
+        <figure class="pt-8">
+
+          <img
+                                    [src]="'https://cdn.thesimpsonsapi.com/500'+char.portrait_path"
+                                    [alt]="char.name"
+                                    class="object-cover"
+                                />
+
+        </figure>
+
+        <div class="card-body items-center text-center">
+
+          <h2 class="card-title text-lg">
+            {{ char.name }}
+          </h2>
+
+          <p class="text-sm text-base-content/60 min-h-[40px]">
+            {{ char.occupation || 'Sin ocupación registrada' }}
+          </p>
+
+          <span
+            class="badge badge-sm mt-2"
+            [class.badge-success]="char.status === 'Alive'"
+            [class.badge-error]="char.status === 'Deceased'"
+            [class.badge-warning]="char.status !== 'Alive' && char.status !== 'Deceased'"
+          >
+            {{ char.status || 'Desconocido' }}
+          </span>
+
+        </div>
+
+      </a>
+
+      }
+
+    </div>
+
+    }
+
+    }
+
+  </div>
+
+</section>
