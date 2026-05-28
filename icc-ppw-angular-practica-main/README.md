@@ -5,7 +5,7 @@
 ## Practica 05 - Formularios Reactivos
 
 ### Autor
-Josue Abad
+Sebastián Alvarado
 
 ---
 
